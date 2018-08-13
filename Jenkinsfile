@@ -3,7 +3,8 @@ pipeline {
 	agent any
 
 	environment {
-		TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
+		TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'		
+		GIT_SSH_COMMAND = ssh -i /var/jenkins_home/.ssh/id_rsa -o 'StrictHostKeyChecking no'
 	}
 
 	stages {
