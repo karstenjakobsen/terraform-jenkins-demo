@@ -1,11 +1,11 @@
 def pullRequest = false
 
+environment {
+	TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
+}
+
 node {
 	
-	environment {
-		TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
-    	}
-
     	stage('checkout') {    
         	checkout scm    
 	}
