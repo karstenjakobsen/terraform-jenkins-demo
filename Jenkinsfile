@@ -4,8 +4,11 @@ pipeline {
 
 	environment {
 		TERRAFORM_CMD='${WORKSPACE}/bin/terraform'		
+		TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'		
 		GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'
-		TF_LOG='DEBUG'
+		TF_LOG='INFO'
+		TF_VAR_vsphere_password='${VSPHERE_PASSWORD}'
+		
 	}
 
 	stages {
@@ -27,7 +30,7 @@ pipeline {
 		stage('terraform init') {
 			steps {
 				sh """				
-				cd terraform/odn1/hp/voip/						
+				cd ${TERRAFORM_PATH}						
 				${TERRAFORM_CMD} init
 				"""
 			}
@@ -37,7 +40,7 @@ pipeline {
 		stage('terraform plan') {
 			steps {
 				sh """
-				cd terraform/odn1/hp/voip/
+				cd ${TERRAFORM_PATH}
 				${TERRAFORM_CMD} plan -out plan.plan
 				"""
 			}
