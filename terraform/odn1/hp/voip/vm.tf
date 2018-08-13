@@ -1,6 +1,6 @@
 module "voip_test" {
-
-  source = "git::https://github.com/pasientskyhosting/terraform-modules.git//modules/vsphere_vm?ref=v5.0.0-rc3"
+  
+  source = "git::https://github-demorepo@github.com/pasientskyhosting/terraform-modules.git//modules/vsphere_vm?ref=v5.0.0-rc3"
 
   datacenter = "${data.vsphere_datacenter.datacenter.name}"
 
