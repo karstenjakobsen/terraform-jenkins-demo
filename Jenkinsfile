@@ -2,9 +2,15 @@ def pullRequest = false
 
 node {
 
-    // Set github status that the images could be built successfully
-    step([$class: 'GitHubSetCommitStatusBuilder'])
-    checkout scm
+    	stage('checkout') {    
+        	checkout scm    
+	}
+	
+	stage('install terraform') {
+		sh 	"""
+			sh scripts/step_install_terraform.sh
+			"""      
+    	}
     
     // we don't release or ask for user input on pull requests
     pullRequest = env.BRANCH_NAME != 'master'    
@@ -14,7 +20,7 @@ node {
         sh """
       	pwd
        	ls -last
-	terraform init
+	./bin/terraform init
         """
     
     }
