@@ -1,13 +1,15 @@
 def pullRequest = false
 
-node {
+pipeline {
 	
+	agent any
+
+	environment {
+		TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
+	}
+
 	stages {
-		
-		environment {
-			TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
-		}
-		
+
 		stage('checkout') {    
 			checkout scm    
 		}
@@ -49,7 +51,7 @@ node {
 			stash includes: 'plan.plan', name: 'plans'
 
 		}
-		
+
 	}
 
 }
