@@ -1,11 +1,6 @@
-def pullRequest = false
-
 pipeline {
 	
 	agent any
-	
-	// we don't release or ask for user input on pull requests
-	pullRequest = env.BRANCH_NAME != 'master' 
 
 	environment {
 		TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
