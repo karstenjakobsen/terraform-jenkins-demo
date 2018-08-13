@@ -5,6 +5,7 @@ pipeline {
 	environment {
 		TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'		
 		GIT_SSH_COMMAND = 'ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'
+		TF_LOG=DEBUG
 	}
 
 	stages {
