@@ -6,32 +6,36 @@ node {
         	checkout scm    
 	}
 	
-	stage('install terraform') {
-		sh 	"""
-			sh scripts/step_install_terraform.sh
-			"""      
+	stage('unzip terraform') {
+		sh """
+		sh scripts/step_install_terraform.sh
+		ln -s bin/terraform /usr/local/bin/terraform
+		"""      
     	}
     
-    // we don't release or ask for user input on pull requests
-    pullRequest = env.BRANCH_NAME != 'master'    
+	// we don't release or ask for user input on pull requests
+	pullRequest = env.BRANCH_NAME != 'master'    
+
+	stage('terraform init') {
+
+		sh """
+		cd terraform/odn1/hp/voip/
+		pwd
+		ls -last
+		terraform init
+		"""
+
+	}
     
-    stage('init') {
-    
-        sh """
-      	pwd
-       	ls -last
-	./bin/terraform init
-        """
-    
-    }
-    
-    stage('plan') {
-    
-        sh """
-          terraform plan -out plan.plan
-        """
-      
-    }
+	stage('terraform plan') {
+
+		sh """
+		pwd
+		ls -last
+		terraform plan -out plan.plan
+		"""
+
+	}
     
     stage('show'){
       sh "terraform show   plan.plan"
