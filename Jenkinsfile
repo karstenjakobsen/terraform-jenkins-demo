@@ -37,6 +37,7 @@ pipeline {
 		stage('terraform plan') {
 			steps {
 				sh """
+				cd terraform/odn1/hp/voip/
 				${TERRAFORM_CMD} plan -out plan.plan
 				"""
 			}
