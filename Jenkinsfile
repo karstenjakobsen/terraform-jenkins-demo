@@ -6,7 +6,7 @@ pipeline {
 		TERRAFORM_CMD='${WORKSPACE}/bin/terraform'		
 		TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'		
 		GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'
-		TF_LOG='INFO'
+		TF_LOG='ERROR'
 		TF_VAR_vsphere_password='${VSPHERE_PASSWORD}'
 		
 	}
