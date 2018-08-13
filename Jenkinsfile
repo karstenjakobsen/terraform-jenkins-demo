@@ -27,8 +27,7 @@ pipeline {
 		stage('terraform init') {
 			steps {
 				sh """				
-				cd terraform/odn1/hp/voip/		
-				export GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'
+				cd terraform/odn1/hp/voip/						
 				${TERRAFORM_CMD} init
 				"""
 			}
