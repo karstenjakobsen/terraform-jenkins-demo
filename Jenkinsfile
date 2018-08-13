@@ -22,7 +22,7 @@ node {
 		cd terraform/odn1/hp/voip/
 		pwd
 		ls -last
-		terraform init
+		${WORKSPACE}/bin/terraform init
 		"""
 
 	}
