@@ -1,47 +1,42 @@
 def pullRequest = false
 
-ansiColor('xterm') {
-
-  node {
+node {
 
     // Set github status that the images could be built successfully
     step([$class: 'GitHubSetCommitStatusBuilder'])
     checkout scm
-
+    
     // we don't release or ask for user input on pull requests
-    pullRequest = env.BRANCH_NAME != 'master'
-   
-
+    pullRequest = env.BRANCH_NAME != 'master'    
+    
     stage('init') {
-
+    
         sh """
-	  pwd
- 	  ls -last
-          terraform init
+      	pwd
+       	ls -last
+	terraform init
         """
-
+    
     }
-
+    
     stage('plan') {
-
+    
         sh """
           terraform plan -out plan.plan
         """
       
     }
-
+    
     stage('show'){
       sh "terraform show   plan.plan"
-
+    
       // Save plan output for future so they can be compared
       archiveArtifacts 'plan.plan'
-
+    
       // store the plan file to be used later on potentially different node
       stash includes: 'plan.plan', name: 'plans'
-
+    
     }
-
-  }
 
 }
 
@@ -60,10 +55,9 @@ timeout(time: 1, unit: 'HOURS') {
     parameters: [string(defaultValue: '', description: 'Your name', name: 'name')]
 }
 
-// Re-alocate a new node for apply
-ansiColor('xterm') {
 
-  node {
+node {
+    
     stage('install'){
       downloadTerraform()
       env.PATH = "${env.PATH}:${env.WORKSPACE}"
@@ -77,6 +71,5 @@ ansiColor('xterm') {
           terraform apply plan.plan
         """
     }
-  }
+    
 }
-
