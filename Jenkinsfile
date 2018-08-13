@@ -1,51 +1,55 @@
 def pullRequest = false
 
-environment {
-	TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
-}
-
 node {
 	
-    	stage('checkout') {    
-        	checkout scm    
-	}
-	
-	stage('install terraform') {
-		sh """	
-		sh scripts/step_install_terraform.sh		
-		"""      
-    	}
-    
-	// we don't release or ask for user input on pull requests
-	pullRequest = env.BRANCH_NAME != 'master'    
+	stages {
+		
+		environment {
+			TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
+		}
+		
+		stage('checkout') {    
+			checkout scm    
+		}
 
-	stage('terraform init') {
+		stage('install terraform') {
+			sh """	
+			sh scripts/step_install_terraform.sh		
+			"""      
+		}
 
-		sh """
-		cd terraform/odn1/hp/voip/		
-		${TERRAFORM_CMD} init
-		"""
+		// we don't release or ask for user input on pull requests
+		pullRequest = env.BRANCH_NAME != 'master'    
 
-	}
-    
-	stage('terraform plan') {
+		stage('terraform init') {
 
-		sh """
-		${TERRAFORM_CMD} plan -out plan.plan
-		"""
+			sh """
+			cd terraform/odn1/hp/voip/		
+			${TERRAFORM_CMD} init
+			"""
 
-	}
-    
-	stage('show'){
+		}
 
-		sh "${TERRAFORM_CMD} show plan.plan"
+		stage('terraform plan') {
 
-		// Save plan output for future so they can be compared
-		archiveArtifacts 'plan.plan'
+			sh """
+			${TERRAFORM_CMD} plan -out plan.plan
+			"""
 
-		// store the plan file to be used later on potentially different node
-		stash includes: 'plan.plan', name: 'plans'
+		}
 
+		stage('show'){
+
+			sh "${TERRAFORM_CMD} show plan.plan"
+
+			// Save plan output for future so they can be compared
+			archiveArtifacts 'plan.plan'
+
+			// store the plan file to be used later on potentially different node
+			stash includes: 'plan.plan', name: 'plans'
+
+		}
+		
 	}
 
 }
