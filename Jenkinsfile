@@ -6,10 +6,9 @@ node {
         	checkout scm    
 	}
 	
-	stage('unzip terraform') {
+	stage('install terraform') {
 		sh """
-		sh scripts/step_install_terraform.sh
-		ln -s bin/terraform /usr/local/bin/terraform
+		sh scripts/step_install_terraform.sh		
 		"""      
     	}
     
