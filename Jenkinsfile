@@ -8,6 +8,7 @@ node {
 	
 	stage('install terraform') {
 		sh """
+		echo $PATH
 		sh scripts/step_install_terraform.sh		
 		"""      
     	}
