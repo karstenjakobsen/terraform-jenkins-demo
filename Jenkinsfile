@@ -1,14 +1,17 @@
 def pullRequest = false
 
 node {
+	
+	environment {
+		TERRAFORM_CMD = '${WORKSPACE}/bin/terraform'
+    	}
 
     	stage('checkout') {    
         	checkout scm    
 	}
 	
 	stage('install terraform') {
-		sh """
-		echo $PATH
+		sh """	
 		sh scripts/step_install_terraform.sh		
 		"""      
     	}
@@ -19,10 +22,8 @@ node {
 	stage('terraform init') {
 
 		sh """
-		cd terraform/odn1/hp/voip/
-		pwd
-		ls -last
-		${WORKSPACE}/bin/terraform init
+		cd terraform/odn1/hp/voip/		
+		${TERRAFORM_CMD} init
 		"""
 
 	}
@@ -30,23 +31,22 @@ node {
 	stage('terraform plan') {
 
 		sh """
-		pwd
-		ls -last
-		terraform plan -out plan.plan
+		${TERRAFORM_CMD} plan -out plan.plan
 		"""
 
 	}
     
-    stage('show'){
-      sh "terraform show   plan.plan"
-    
-      // Save plan output for future so they can be compared
-      archiveArtifacts 'plan.plan'
-    
-      // store the plan file to be used later on potentially different node
-      stash includes: 'plan.plan', name: 'plans'
-    
-    }
+	stage('show'){
+
+		sh "${TERRAFORM_CMD} show plan.plan"
+
+		// Save plan output for future so they can be compared
+		archiveArtifacts 'plan.plan'
+
+		// store the plan file to be used later on potentially different node
+		stash includes: 'plan.plan', name: 'plans'
+
+	}
 
 }
 
