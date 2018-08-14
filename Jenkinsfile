@@ -19,6 +19,12 @@ pipeline {
               checkout scm
             }
         }
+	 
+	stage('get changed files') {
+            steps {
+              git diff --name-only $GIT_COMMIT
+            }
+        }	    
     
         stage('pull terraform image') {
             steps {
