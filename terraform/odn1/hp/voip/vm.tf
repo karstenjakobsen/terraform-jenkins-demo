@@ -5,8 +5,8 @@ module "voip_test" {
   datacenter = "${data.vsphere_datacenter.datacenter.name}"
 
   # Ensure that each property contains the same number of items
-  hostname            = "odn1-test01"
-  ipv4_address        = "10.50.61.99"
+  hostname            = "odn1-test021"
+  ipv4_address        = "10.50.61.100"
 
   # Properties below can be single or multiple comma seperated.
   ipv4_gateway        = "10.50.61.1"
