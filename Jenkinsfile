@@ -8,8 +8,8 @@ pipeline {
 
     environment {
         TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'
-        TERRAFORM_CMD = "docker run --rm -v `pwd`:/data -e TF_VAR_vsphere_password=${VSPHERE_PASSWORD} -e TF_LOG='ERROR' ${TERRAFORM_IMAGE}"
-        GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'
+        TERRAFORM_CMD = "docker run --rm -v `pwd`:/data ${TERRAFORM_IMAGE}"
+        GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'	
     }
     
     stages {
@@ -42,6 +42,8 @@ pipeline {
             steps {
                 sh  """
                     cd ${TERRAFORM_PATH}
+		    pwd
+		    ls -lah
                     ${TERRAFORM_CMD} init -input=false
                     """
             }
@@ -53,7 +55,7 @@ pipeline {
 			steps {
 				sh """
 				cd ${TERRAFORM_PATH}
-				${TERRAFORM_CMD} plan -out plan.plan
+				${TERRAFORM_CMD} plan -var "vsphere_password=${VSPHERE_PASSWORD}" -out plan.plan
 				"""
 			}
 
