@@ -12,6 +12,7 @@
 ssh-keygen -t rsa
 ```
 
+```
 root@odn1-test01:~# ssh-keygen -t rsa
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa):
@@ -38,7 +39,7 @@ root@odn1-test01:~# ^C
 
 ### Add deployment key to Github
 
-Add the ``` /root/.ssh/id_rsa.pub ``` to your deploy keys on Github
+Add the `/root/.ssh/id_rsa.pub ` to your deploy keys on Github
 
 ### Start Jenskins ###
 
