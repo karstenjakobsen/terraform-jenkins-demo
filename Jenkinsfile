@@ -22,7 +22,9 @@ pipeline {
 	 
 	stage('get changed files') {
             steps {
-              git diff --name-only $GIT_COMMIT
+                sh  """
+                    git diff --name-only $GIT_COMMIT
+                    """
             }
         }	    
     
