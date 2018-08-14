@@ -2,7 +2,7 @@
 GIT_COMMIT_DESC=$(git log --format=oneline -n 1 $1)
 
 if [[ "$GIT_COMMIT_DESC" == *"[path="* ]]; then
-		return true
+		echo "Has path"
 else	
-		return false
+		echo "failed path"
 fi
