@@ -6,10 +6,10 @@ pipeline {
         }
     }
 
-    environment {
-        TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'
-        TERRAFORM_CMD = "docker run -v `pwd`:/data ${TERRAFORM_IMAGE}"
-        GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'	
+    environment {	
+	TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'
+	TERRAFORM_CMD = "docker run --net=host -w /data -v /root/.ssh:/root/.ssh -v `pwd`:/data -e GIT_SSH_COMMAND='ssh -i /root/.ssh/id_rsa -oStrictHostKeyChecking=no' ${TERRAFORM_IMAGE}"
+     
     }
     
     stages {
