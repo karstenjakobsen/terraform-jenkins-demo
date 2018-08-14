@@ -7,9 +7,10 @@ pipeline {
     }
 
     environment {
+	GIT_SSH_COMMAND='ssh -i /root/.ssh/id_rsa -oStrictHostKeyChecking=no'	
         TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'
-        TERRAFORM_CMD = "docker run -w /data -v `pwd`:/data ${TERRAFORM_IMAGE}"
-        GIT_SSH_COMMAND='ssh -i /root/.ssh/id_rsa -oStrictHostKeyChecking=no'	
+    	TERRAFORM_CMD = "docker run -w /data -v /root/.ssh:/root/.ssh -v `pwd`:/data -e GIT_SSH_COMMAND=${GIT_SSH_COMMAND} ${TERRAFORM_IMAGE}"
+     
     }
     
     stages {
