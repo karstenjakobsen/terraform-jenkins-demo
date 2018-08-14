@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'
-        TERRAFORM_CMD = "docker run --rm -v `pwd`:/data ${TERRAFORM_IMAGE}"
+        TERRAFORM_CMD = "docker run -v `pwd`:/data ${TERRAFORM_IMAGE}"
         GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'	
     }
     
@@ -44,7 +44,7 @@ pipeline {
                     cd ${TERRAFORM_PATH}
 		    pwd
 		    ls -lah
-                    ${TERRAFORM_CMD} init -input=false
+                    ${TERRAFORM_CMD} init
                     """
             }
         
