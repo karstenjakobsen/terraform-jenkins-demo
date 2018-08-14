@@ -1,43 +1,55 @@
 pipeline {
-	
-	agent any
+    
+    agent {
+        node {
+            label 'master'
+        }
+    }
 
-	environment {
-		TERRAFORM_CMD='${WORKSPACE}/bin/terraform'		
-		TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'		
-		GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'
-		TF_LOG='ERROR'
-		TF_VAR_vsphere_password='${VSPHERE_PASSWORD}'
-		
-	}
-
-	stages {
-
-		stage('checkout') { 			
-			steps {
-				checkout scm 
-			}
-		}
-
-		stage('install terraform') {
-			steps {
-				sh """	
-				sh scripts/step_install_terraform.sh		
-				"""    
-			}
-		}  
-
-		stage('terraform init') {
-			steps {
-				sh """				
-				cd ${TERRAFORM_PATH}						
-				${TERRAFORM_CMD} init
-				"""
-			}
-
-		}
-
-		stage('terraform plan') {
+    environment {
+        TERRAFORM_PATH='${WORKSPACE}/terraform/odn1/hp/voip/'
+        TERRAFORM_CMD = "docker run --rm -v `pwd`:/data -e TF_VAR_vsphere_password=${VSPHERE_PASSWORD} -e TF_LOG='ERROR' ${TERRAFORM_IMAGE}"
+        GIT_SSH_COMMAND='ssh -i /var/jenkins_home/.ssh/id_rsa -oStrictHostKeyChecking=no'
+    }
+    
+    stages {
+        
+        stage('checkout repo') {
+            steps {
+              checkout scm
+            }
+        }
+    
+        stage('pull terraform image') {
+            steps {
+                sh  """
+                    docker pull $TERRAFORM_IMAGE
+                    """
+            }
+        }
+        
+        stage('terraform test') {
+            
+            steps {
+                sh  """
+                    ${TERRAFORM_CMD} --version
+                    """
+            }
+        }
+        
+        stage('terraform init') {
+            
+            steps {
+                sh  """
+                    cd ${TERRAFORM_PATH}
+                    ${TERRAFORM_CMD} init -input=false
+                    """
+            }
+        
+        }
+        
+        stage('terraform plan') {
+            
 			steps {
 				sh """
 				cd ${TERRAFORM_PATH}
@@ -46,27 +58,5 @@ pipeline {
 			}
 
 		}
-
-		stage('show'){
-			
-			steps {
-				sh "${TERRAFORM_CMD} show plan.plan"
-
-				// Save plan output for future so they can be compared
-				archiveArtifacts 'plan.plan'
-
-				// store the plan file to be used later on potentially different node
-				stash includes: 'plan.plan', name: 'plans'
-			}
-
-		}
-
-	}
-
-}
-
-// We don't run the rest of the code when we aren't running in master branch
-// So pull requests only run a plan
-if(pullRequest){
-  return
+    }
 }
