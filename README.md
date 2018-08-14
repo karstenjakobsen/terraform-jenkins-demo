@@ -4,7 +4,7 @@
 
 ### Start Consul server/node
 
-``` sh consul_run.sh ```
+``` sh scripts/consul_run.sh ```
 
 ### Create SSH key on host with no password
 
@@ -41,9 +41,17 @@ root@odn1-test01:~# ^C
 
 Add the `/root/.ssh/id_rsa.pub ` to your deploy keys on Github
 
+### Build Jenkins image
+
+```
+sh scripts/build_jenkins.sh
+```
+
 ### Start Jenskins ###
 
-``` sh jenkins_run.sh ```
+``` 
+sh scripts/jenkins_run.sh
+```
 
 ### Find one time password for Jensings GUI
 
