@@ -20,10 +20,10 @@ pipeline {
             }
         }
 	 
-	stage('get changed files') {
+	stage('get deployment path from comments') {
             steps {
-                sh  """
-                    git diff HEAD^ --name-only
+                sh  """                    
+		    sh scripts/get_path.sh
                     """
             }
         }	    
