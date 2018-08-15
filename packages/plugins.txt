@@ -1,0 +1,8 @@
+git:latest
+docker-build-step:latest
+docker-plugin:latest
+pipeline-aggregator-view:latest
+pipeline-github:latest
+pipeline-stage-step:latest
+parameterized-trigger:latest
+jquery:latest

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker build -t pasientskyhosting/jenkins-docker:0.0.1-build-1 .
+docker build -t pasientskyhosting/jenkins-docker:lts-alpine-build-1 .
