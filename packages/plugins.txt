@@ -1,3 +1,4 @@
+build-pipeline-plugin:latest
 git:latest
 docker-build-step:latest
 docker-plugin:latest
