@@ -13,6 +13,8 @@ RUN apk add --update shadow \
     && usermod -a -G staff jenkins
 
 COPY packages/plugins.txt /usr/share/jenkins/plugins.txt
+
+# Install plugins
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
 
 EXPOSE 8080
