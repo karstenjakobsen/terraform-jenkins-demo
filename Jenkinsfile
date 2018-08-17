@@ -72,7 +72,7 @@ pipeline {
 		steps {
 			sh """
 			cd ${TERRAFORM_PATH}
-			${TERRAFORM_CMD} apply -var "vsphere_password=${VSPHERE_PASSWORD}" -input=false plan.plan
+			${TERRAFORM_CMD} apply -input=false plan.plan
 			"""
 		}
 
