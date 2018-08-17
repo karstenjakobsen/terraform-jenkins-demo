@@ -58,13 +58,24 @@ pipeline {
 
         stage('terraform plan') {
 
-			steps {
-				sh """
-				cd ${TERRAFORM_PATH}
-				${TERRAFORM_CMD} plan -var "vsphere_password=${VSPHERE_PASSWORD}" -out plan.plan
-				"""
-			}
-
+		steps {
+			sh """
+			cd ${TERRAFORM_PATH}
+			${TERRAFORM_CMD} plan -var "vsphere_password=${VSPHERE_PASSWORD}" -input=false -out plan.plan
+			"""
 		}
+
+	}
+	    
+    	stage('terraform apply') {
+
+		steps {
+			sh """
+			cd ${TERRAFORM_PATH}
+			${TERRAFORM_CMD} apply -var "vsphere_password=${VSPHERE_PASSWORD}" -input=false plan.plan
+			"""
+		}
+
+	}
     }
 }
